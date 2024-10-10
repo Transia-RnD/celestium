@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "celestium"
+version = "0.0.1"
+description = ""
+authors = ["Denis Angell <dangell@transia.co>"]
+
+[tool.poetry.dependencies]
+python = "^3.10.0"
+speechrecognition = "^3.10.4"
+librosa = "^0.10.2.post1"
+pyaudio = "^0.2.14"
+pyttsx3 = "^2.98"
+python-speech-features = "^0.6"
+google-cloud-speech = "^2.27.0"
+noisereduce = "^3.0.3"
+xahau-py = "^3.0.0"
+pydub = "^0.25.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+flake8 = "^7.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

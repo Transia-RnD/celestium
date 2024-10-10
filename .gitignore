@@ -1,0 +1,14 @@
+
+.DS_Store
+__pycache__
+.pytest_cache
+.venv
+/dist
+.env
+
+credentials.json
+gmm_models
+user_db
+voice_database
+password_verification.wav
+transaction_approval.wav
