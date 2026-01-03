@@ -29,6 +29,7 @@ from pydub import AudioSegment
 from pydub.silence import split_on_silence
 from celestium.xahau import XahauBot
 from xahau.models import Transaction
+from celestium.speaker_verification import validate_authorized_speaker
 
 
 def validate_identity(filename: str, name: str) -> bool:
@@ -188,6 +189,15 @@ def get_transaction() -> Dict[str, Any]:
     FILENAME = "./transaction_approval.wav"
     record_audio(FILENAME, "Approve or Deny?")
 
+    # Verify single speaker before processing
+    print("Verifying speaker identity...")
+    is_valid, message = validate_authorized_speaker(FILENAME, threshold=0.90)
+    if not is_valid:
+        print(f"❌ {message}")
+        speak("Multiple speakers detected. Please ensure you are alone.")
+        return None
+    print(f"✓ {message}")
+
     r = speechsr.Recognizer()
     with speechsr.AudioFile(FILENAME) as source:
         audio_data = r.record(source)
@@ -215,6 +225,16 @@ def verify_password(name, preapproved_txn):
     FILENAME = "./password_verification.wav"
     CLEAN_FILENAME = f"./voice_database/{name}/clean_voice/password_verification.wav"
     record_audio(FILENAME, "What Is Your Callsign?")
+
+    # Verify single speaker before processing
+    print("Verifying speaker count...")
+    is_valid, message = validate_authorized_speaker(FILENAME, threshold=0.90)
+    if not is_valid:
+        print(f"❌ {message}")
+        speak("Multiple speakers detected. Authentication failed.")
+        return False
+    print(f"✓ {message}")
+
     remove_background_noise(FILENAME, f"./voice_database/{name}/clean_voice")
 
     r = speechsr.Recognizer()
